@@ -4,6 +4,7 @@ from random import choice
 
 import yagmail
 import time
+import schedule
 import json
 import datetime
 import requests
@@ -11,24 +12,40 @@ import requests
 
 def main():
     # 开启死循环
-    with open("config/receivers.json", encoding="utf-8") as f:
-        receivers: list = json.loads(f.read())
 
+    # 下一步更新计划，开成flask框架，开一个管理端页面
+    # 能够随时添加移除接受消息的QQ号
+    # 每个qq号随时添加/删除 需求
+
+    # 定义每天发送电子邮件的时间
+    email_time = "07:23"
+
+    # 在每天的指定时间执行send_email()函数
+    schedule.every().day.at(email_time).do(sendEmailDay)
+
+    while True:
+        # 运行所有的已计划任务
+        schedule.run_pending()
+        time.sleep(25)
+        ...
+
+
+def sendEmailDay():
+    """这个函数每天只执行一次，发送邮件"""
+    # 邮件模板内容
     contentObj = {
         "特殊节日祝福": "",
         "彩虹屁": "祝你今天好运！\n"
     }
-
-    while True:
-        # 生成今日内容
-        contentObj = generateContent(contentObj)
-        print(contentObj)
-        # 开始发送邮件
-        for userDic in receivers:
-            sendEmail(userDic['email'], choice(userDic['nameList']), getEmailContent(userDic, contentObj))
-            time.sleep(1)  # 冷却时间
-        time.sleep(60 * 60 * 24)  # 一天
-        ...
+    # 更新模板内容
+    contentObj = generateContent(contentObj)
+    # 读取收件人列表
+    with open("config/receivers.json", encoding="utf-8") as f:
+        receivers: list = json.loads(f.read())
+    # 开始发送邮件
+    for userDic in receivers:
+        sendEmail(userDic['email'], choice(userDic['nameList']), getEmailContent(userDic, contentObj))
+        time.sleep(0.5)  # 冷却时间
 
 
 def generateContent(defaultDic: dict) -> dict:
