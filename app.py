@@ -51,13 +51,24 @@ def sendEmailDay():
 
 
 def getEmailContent(userDic: dict, contentDic: dict) -> str:
-    """根据用户对象生成邮件内容"""
+    """
+    根据用户对象生成邮件内容
+    :param userDic: 收件人对象，来源于json文件
+    :param contentDic: 内容大字典，来源于最开始准备好了的
+    :return:
+    """
     # 要有顺序讲究
     reqArr = userDic["requirements"]
+
+    with open("email.html", encoding="utf-8") as f:
+        html = f.read().replace("\n", "")
+
     res = ""
     for reqKey in reqArr:
-        res += contentDic[reqKey] + "\n"
-    return res.strip()
+        res += f"<div class='block'>{contentDic[reqKey]}</div>"
+    res = res.strip()
+    html = html.replace("#HTML_CONTENT#", res)
+    return html
 
 
 def sendEmail(receiverEmail: str, title: str, content: str):

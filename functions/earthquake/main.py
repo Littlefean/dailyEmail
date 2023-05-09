@@ -49,13 +49,13 @@ def computeLevel(levelStr):
     except ValueError:
         return ""
     if level < 4:
-        return "一些人可以感觉到轻微的颤动，但大多数人不会察觉。"
+        return "大多数人不会察觉。"
     if level < 5:
-        return "玻璃和易碎物品可能会震落。日常生活不会受到太大影响"
+        return "有点动静但影响不大"
     if level < 6:
-        return "家具会晃动，挂墙上的物品会晃动并发出响声，地面会产生裂缝。"
+        return "家具会晃动"
     if level < 7:
-        return "房屋会受到不同程度的损坏，一些墙体、柱子和地基可能会崩塌。"
+        return "房屋会受到不同程度的损坏"
     if level < 8:
         return "大多数建筑物都会受到损坏，一些建筑物和桥梁甚至可能会倒塌。车辆和火车无法继续行驶"
     else:

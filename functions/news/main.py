@@ -33,15 +33,13 @@ def main():
     # excludeKeywords = read_keywords_file("excludeKeywords.txt")
     filtered_result = [r for r in filtered_result if not any(kw in r['title'] for kw in excludeKeywords)]
 
-    # for obj in filtered_result:
-    #     print(obj)
-    # print(html)
     return objectListToStr(filtered_result)
 
 
 def objectListToStr(objList):
     res = "以下是今天抓到的新闻：\n"
     for item in objList:
+        # res += f"{item['title']}：{item['url']}\n"
         res += f"{item['title']}：{item['url']}\n"
     return res
 
